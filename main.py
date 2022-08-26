@@ -60,6 +60,7 @@ class Window():
     def click(self):
         val = {'left': 1, 'center':2, 'right': 3}
         if self.times != self.count and self.nonstop:
+            print(self.count, end=' ')
             if val[self.mouse_but_val.get()] == 1: pyautogui.leftClick()
             if val[self.mouse_but_val.get()] == 2: pyautogui.middleClick()
             if val[self.mouse_but_val.get()] == 3: pyautogui.rightClick()
