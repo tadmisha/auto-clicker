@@ -25,12 +25,12 @@ class Window():
                                   padx=7, justify=tk.LEFT, anchor='w', width=round(self.w*0.0187))
         self.mouse_but_text = tk.Label(self.win, text='Mouse button', bg='#a5a5a5', font=('Regular', 8, 'bold'))
         self.mouse_but_val = tk.StringVar(self.win, value='left')
-        self.mouse_but = tk.OptionMenu(self.win, self.mouse_but_val, *['left', 'center', 'right'])
+        self.mouse_but = tk.OptionMenu(self.win, self.mouse_but_val, *['left', 'middle', 'right'])
         self.repeat_s = tk.Radiobutton(self.win, text='Repeat until stopped', variable=self.repeat_val, value=1)
         self.repeat_c = tk.Radiobutton(self.win, text='Repeat', variable=self.repeat_val, value=2)
         self.repeat_ct = tk.Entry(self.win,  width=round(self.w*0.018), justify=tk.CENTER, font=('Regular',13),
                                   validate='all', validatecommand=(self.win.register(lambda num: num.isdigit() or num == ''), '%P'))
-        self.repeat_ct.insert(0, '1')
+        self.repeat_ct.insert(0, '10')
         self.start = tk.Button(self.win, text='Start (Shift+S)', bg='white',
                                font=('Regular', 25, 'bold'), command=self.btn)
         self.stop = tk.Button(self.win, state=tk.DISABLED, text='Stop (Shift+S)', bg='white',
@@ -60,6 +60,7 @@ class Window():
     def click(self):
         val = {'left': 1, 'center':2, 'right': 3}
         if self.times != self.count and self.nonstop:
+            print(self.count, end=' ')
             if val[self.mouse_but_val.get()] == 1: pyautogui.leftClick()
             if val[self.mouse_but_val.get()] == 2: pyautogui.middleClick()
             if val[self.mouse_but_val.get()] == 3: pyautogui.rightClick()
@@ -83,7 +84,7 @@ class Window():
             if val == 1: self.times=-1
             if val == 2: self.times = int(self.repeat_ct.get())
             self.nonstop = True
-            print(self.times)
+            print('\n%i' % self.times)
             self.click()
         elif self.but_val == 2:
             self.start['state'] = tk.NORMAL
