@@ -14,6 +14,8 @@ class Window():
         self.times = 100
         self.count = 0
         self.but_val = 1
+        self.mouse_btn = 'left'
+        self.cd = 1
 
         self.repeat_val = tk.IntVar()
         self.repeat_val.set(1)
@@ -58,18 +60,13 @@ class Window():
         self.win.after(30, self.change_coord)
 
     def click(self):
-        val = {'left': 1, 'center':2, 'right': 3}
         if self.times != self.count and self.nonstop:
             print(self.count, end=' ')
-            if val[self.mouse_but_val.get()] == 1: pyautogui.leftClick()
-            if val[self.mouse_but_val.get()] == 2: pyautogui.middleClick()
-            if val[self.mouse_but_val.get()] == 3: pyautogui.rightClick()
-
+            pyautogui.click(button=self.mouse_btn)
             self.win.after(round(float(self.cooldown.get())*1000), self.click)
             self.count+=1
         else:
-            self.start['state'] = tk.NORMAL
-            self.stop['state'] = tk.DISABLED
+            self.start['state'], self.stop['state'] = tk.NORMAL, tk.DISABLED
             self.but_val = 1
             self.nonstop = False
             self.count = 0
@@ -78,18 +75,16 @@ class Window():
 
     def btn(self):
         if self.but_val == 1:
-            self.start['state'] = tk.DISABLED
-            self.stop['state'] = tk.NORMAL
+            self.start['state'], self.stop['state'] = tk.DISABLED, tk.NORMAL
             self.but_val = 2
-            val = self.repeat_val.get()
-            if val == 1: self.times=-1
-            if val == 2: self.times = int(self.repeat_ct.get())
+            self.times = -1 if self.repeat_val.get() == 1 else int(self.repeat_ct.get())
             self.nonstop = True
+            self.mouse_btn = self.mouse_but_val.get()
+            self.cd = round(float(self.cooldown.get())*1000)
             print('\n%i' % self.times)
             self.click()
         elif self.but_val == 2:
-            self.start['state'] = tk.NORMAL
-            self.stop['state'] = tk.DISABLED
+            self.start['state'], self.stop['state'] = tk.NORMAL, tk.DISABLED
             self.but_val = 1
             self.nonstop = False
             self.count = 0
